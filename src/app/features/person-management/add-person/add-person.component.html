@@ -1,0 +1,71 @@
+<div class="add-person-container">
+  <mat-card class="add-person-card">
+    <mat-card-header>
+      <mat-card-title>Ajouter une personne</mat-card-title>
+      <mat-card-subtitle>Remplissez le formulaire pour ajouter une nouvelle personne à l'arbre</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (error) {
+        <app-error-message [message]="error"></app-error-message>
+      }
+
+      <form [formGroup]="personForm" (ngSubmit)="onSubmit()">
+        <mat-stepper [linear]="isLinear" #stepper>
+          <mat-step [stepControl]="personForm.get('prenom')!">
+            <ng-template matStepLabel>Identité</ng-template>
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Prénom</mat-label>
+                <input matInput formControlName="prenom" required>
+                <mat-error>Prénom requis</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Nom</mat-label>
+                <input matInput formControlName="nom" required>
+                <mat-error>Nom requis</mat-error>
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Date de naissance</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="dateNaissance" required>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error>Date de naissance requise</mat-error>
+            </mat-form-field>
+
+            <div>
+              <button mat-button matStepperNext type="button">Suivant</button>
+            </div>
+          </mat-step>
+
+          <mat-step [stepControl]="personForm.get('lieuNaissance')!">
+            <ng-template matStepLabel>Informations complémentaires</ng-template>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Lieu de naissance</mat-label>
+              <input matInput formControlName="lieuNaissance">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Métadonnées (optionnel)</mat-label>
+              <textarea matInput formControlName="metadata" rows="4"></textarea>
+            </mat-form-field>
+
+            <div>
+              <button mat-button matStepperPrevious type="button">Précédent</button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="personForm.invalid || loading">
+                @if (loading) {
+                  <mat-icon class="spinning">hourglass_empty</mat-icon>
+                } @else {
+                  Créer
+                }
+              </button>
+            </div>
+          </mat-step>
+        </mat-stepper>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

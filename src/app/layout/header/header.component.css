@@ -1,0 +1,60 @@
+.logo-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+  text-decoration: none;
+}
+
+.logo-image {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-links a.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.user-menu-button,
+.menu-button {
+  margin-left: 1rem;
+}
+
+.user-info {
+  padding: 1rem;
+  min-width: 200px;
+}
+
+.user-name {
+  margin: 0 0 0.25rem 0;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.user-email {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.user-role {
+  margin: 0;
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.6);
+  text-transform: uppercase;
+}

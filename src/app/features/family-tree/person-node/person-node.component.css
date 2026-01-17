@@ -1,0 +1,28 @@
+.person-node {
+  display: flex;
+  justify-content: center;
+}
+
+.node-card {
+  min-width: 200px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.node-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.person-node.main-person .node-card {
+  border: 2px solid #667eea;
+  background-color: #f3f4f6;
+}
+
+.node-avatar {
+  background-color: #667eea;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

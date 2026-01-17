@@ -1,0 +1,85 @@
+<div class="home-container">
+  <h1>Bienvenue dans Racines</h1>
+  <p class="subtitle">Votre arbre généalogique familial</p>
+
+  <div class="actions-grid">
+    <mat-card class="action-card" routerLink="/family-tree">
+      <mat-card-header>
+        <div mat-card-avatar class="icon-avatar">
+          <mat-icon>account_tree</mat-icon>
+        </div>
+        <mat-card-title>Voir l'arbre</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Consultez votre arbre généalogique complet</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button color="primary">Voir l'arbre</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="action-card" routerLink="/persons">
+      <mat-card-header>
+        <div mat-card-avatar class="icon-avatar">
+          <mat-icon>people</mat-icon>
+        </div>
+        <mat-card-title>Personnes</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Gérez les membres de votre famille</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button color="primary">Voir les personnes</button>
+      </mat-card-actions>
+    </mat-card>
+
+    @if (store.isSuperAdmin() || store.isValidatedUser()) {
+      <mat-card class="action-card" routerLink="/claims">
+        <mat-card-header>
+          <div mat-card-avatar class="icon-avatar">
+            <mat-icon>verified_user</mat-icon>
+          </div>
+          <mat-card-title>Revendications</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Gérer les demandes de revendication de profil</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="primary">Voir les revendications</button>
+        </mat-card-actions>
+      </mat-card>
+
+      <mat-card class="action-card" routerLink="/validations">
+        <mat-card-header>
+          <div mat-card-avatar class="icon-avatar">
+            <mat-icon>check_circle</mat-icon>
+          </div>
+          <mat-card-title>Validations</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Valider les ajouts de membres</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="primary">Voir les validations</button>
+        </mat-card-actions>
+      </mat-card>
+    }
+
+    @if (store.isSuperAdmin()) {
+      <mat-card class="action-card" routerLink="/admin">
+        <mat-card-header>
+          <div mat-card-avatar class="icon-avatar">
+            <mat-icon>admin_panel_settings</mat-icon>
+          </div>
+          <mat-card-title>Administration</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Panneau d'administration</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="primary">Accéder à l'admin</button>
+        </mat-card-actions>
+      </mat-card>
+    }
+  </div>
+</div>

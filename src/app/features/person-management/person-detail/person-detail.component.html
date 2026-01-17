@@ -1,0 +1,92 @@
+<div class="person-detail-container">
+  @if (loading) {
+    <app-loading-spinner message="Chargement de la personne..."></app-loading-spinner>
+  }
+  
+  @if (error) {
+    <app-error-message [message]="error"></app-error-message>
+  }
+
+  @if (person && !loading) {
+    <mat-card class="person-detail-card">
+      <mat-card-header>
+        <div mat-card-avatar class="person-avatar-large">
+          <mat-icon>person</mat-icon>
+        </div>
+        <mat-card-title>{{ person.prenom }} {{ person.nom }}</mat-card-title>
+        <mat-card-subtitle>
+          @if (person.dateNaissance) {
+            Né(e) le {{ person.dateNaissance | date:'dd/MM/yyyy' }}
+          }
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="person-info">
+          @if (person.lieuNaissance) {
+            <div class="info-item">
+              <mat-icon>location_on</mat-icon>
+              <span>{{ person.lieuNaissance }}</span>
+            </div>
+          }
+          
+          <div class="info-item">
+            <mat-icon>{{ person.isPublic ? 'public' : 'lock' }}</mat-icon>
+            <span>{{ person.isPublic ? 'Public' : 'Privé' }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-raised-button color="primary" [routerLink]="['/family-tree', person.id]">
+          <mat-icon>account_tree</mat-icon>
+          Voir l'arbre généalogique
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    @if (familyTree) {
+      <mat-card class="family-tree-card">
+        <mat-card-header>
+          <mat-card-title>Arbre généalogique</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="family-tree-content">
+            @if (familyTree.parents.length > 0) {
+              <section class="parents-section">
+                <h3>Parents</h3>
+                <div class="persons-grid">
+                  @for (parent of familyTree.parents; track parent.id) {
+                    <app-person-card [person]="parent"></app-person-card>
+                  }
+                </div>
+              </section>
+            }
+
+            @if (familyTree.grandparents.length > 0) {
+              <section class="grandparents-section">
+                <h3>Grands-parents</h3>
+                <div class="persons-grid">
+                  @for (grandparent of familyTree.grandparents; track grandparent.id) {
+                    <app-person-card [person]="grandparent"></app-person-card>
+                  }
+                </div>
+              </section>
+            }
+
+            @if (familyTree.siblings.length > 0) {
+              <section class="siblings-section">
+                <h3>Frères et sœurs</h3>
+                <div class="persons-grid">
+                  @for (sibling of familyTree.siblings; track sibling.id) {
+                    <app-person-card [person]="sibling"></app-person-card>
+                  }
+                </div>
+              </section>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+  }
+</div>

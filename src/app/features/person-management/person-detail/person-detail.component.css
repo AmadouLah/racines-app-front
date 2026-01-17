@@ -1,0 +1,64 @@
+.person-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.person-detail-card {
+  margin-bottom: 2rem;
+}
+
+.person-avatar-large {
+  background-color: #667eea;
+  color: white;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.person-avatar-large mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+}
+
+.person-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-item mat-icon {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.family-tree-card {
+  margin-top: 2rem;
+}
+
+.family-tree-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.family-tree-content h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.25rem;
+}
+
+.persons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}

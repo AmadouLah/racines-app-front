@@ -1,0 +1,79 @@
+<div class="claim-profile-container">
+  <mat-card class="claim-card">
+    <mat-card-header>
+      <mat-card-title>Revendiquer un profil</mat-card-title>
+      <mat-card-subtitle>Remplissez le formulaire ci-dessous pour revendiquer un profil</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (error) {
+        <app-error-message [message]="error"></app-error-message>
+      }
+
+      <form [formGroup]="claimForm" (ngSubmit)="onSubmit()">
+        <mat-stepper [linear]="isLinear" #stepper>
+          <mat-step [stepControl]="claimForm.get('personId')!">
+            <ng-template matStepLabel>Profil</ng-template>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>ID du profil</mat-label>
+              <input matInput formControlName="personId" readonly>
+              <mat-hint>L'ID du profil à revendiquer</mat-hint>
+            </mat-form-field>
+            <div>
+              <button mat-button matStepperNext type="button">Suivant</button>
+            </div>
+          </mat-step>
+
+          <mat-step [stepControl]="claimForm.get('email')!">
+            <ng-template matStepLabel>Contact</ng-template>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" type="email" required>
+              <mat-error>Email requis et doit être valide</mat-error>
+            </mat-form-field>
+            <div>
+              <button mat-button matStepperPrevious type="button">Précédent</button>
+              <button mat-button matStepperNext type="button">Suivant</button>
+            </div>
+          </mat-step>
+
+          <mat-step [stepControl]="claimForm.get('nom')!">
+            <ng-template matStepLabel>Informations personnelles</ng-template>
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Prénom</mat-label>
+                <input matInput formControlName="prenom" required>
+                <mat-error>Prénom requis</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Nom</mat-label>
+                <input matInput formControlName="nom" required>
+                <mat-error>Nom requis</mat-error>
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Date de naissance</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="dateNaissance" required>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error>Date de naissance requise</mat-error>
+            </mat-form-field>
+
+            <div>
+              <button mat-button matStepperPrevious type="button">Précédent</button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="claimForm.invalid || loading">
+                @if (loading) {
+                  <mat-icon class="spinning">hourglass_empty</mat-icon>
+                } @else {
+                  Soumettre
+                }
+              </button>
+            </div>
+          </mat-step>
+        </mat-stepper>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

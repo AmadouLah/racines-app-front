@@ -1,0 +1,42 @@
+.pending-additions-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.pending-additions-card {
+  margin-bottom: 2rem;
+}
+
+.additions-table {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.person-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.person-id {
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.no-additions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.no-additions mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1rem;
+  color: rgba(0, 0, 0, 0.4);
+}

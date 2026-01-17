@@ -1,0 +1,16 @@
+<div class="callback-container">
+  @if (loading) {
+    <mat-card class="callback-card">
+      <mat-card-content>
+        <app-loading-spinner message="Connexion en cours..."></app-loading-spinner>
+      </mat-card-content>
+    </mat-card>
+  }
+  @if (error) {
+    <mat-card class="callback-card">
+      <mat-card-content>
+        <app-error-message [message]="error"></app-error-message>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

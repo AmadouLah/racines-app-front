@@ -1,0 +1,97 @@
+<div class="claim-detail-container">
+  @if (loading) {
+    <app-loading-spinner message="Chargement de la revendication..."></app-loading-spinner>
+  }
+
+  @if (error) {
+    <app-error-message [message]="error"></app-error-message>
+  }
+
+  @if (claim && !loading) {
+    <mat-card class="claim-detail-card">
+      <mat-card-header>
+        <mat-card-title>Détails de la revendication</mat-card-title>
+        <mat-card-subtitle>
+          <mat-chip-set>
+            <mat-chip [color]="getStatusColor(claim.status)">
+              {{ getStatusLabel(claim.status) }}
+            </mat-chip>
+          </mat-chip-set>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="claim-info">
+          <section class="person-section">
+            <h3>Profil concerné</h3>
+            <div class="info-row">
+              <span class="label">ID du profil:</span>
+              <span>{{ claim.personId }}</span>
+            </div>
+            <button mat-button [routerLink]="['/persons', claim.personId]">
+              <mat-icon>visibility</mat-icon>
+              Voir le profil
+            </button>
+          </section>
+
+          <section class="requester-section">
+            <h3>Demandeur</h3>
+            <div class="info-row">
+              <span class="label">Nom complet:</span>
+              <span>{{ claim.prenom }} {{ claim.nom }}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Email:</span>
+              <span>{{ claim.email }}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Date de naissance:</span>
+              <span>{{ claim.dateNaissance | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </section>
+
+          <section class="status-section">
+            <h3>Statut</h3>
+            <div class="info-row">
+              <span class="label">Statut:</span>
+              <mat-chip-set>
+                <mat-chip [color]="getStatusColor(claim.status)">
+                  {{ getStatusLabel(claim.status) }}
+                </mat-chip>
+              </mat-chip-set>
+            </div>
+            @if (claim.processedAt) {
+              <div class="info-row">
+                <span class="label">Traité le:</span>
+                <span>{{ claim.processedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+              </div>
+            }
+            @if (claim.rejectionReason) {
+              <div class="info-row">
+                <span class="label">Raison du rejet:</span>
+                <span>{{ claim.rejectionReason }}</span>
+              </div>
+            }
+          </section>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        @if (claim.status === ClaimStatus.PENDING && store.isSuperAdmin()) {
+          <button mat-raised-button color="primary" (click)="approveClaim()">
+            <mat-icon>check_circle</mat-icon>
+            Approuver
+          </button>
+          <button mat-raised-button (click)="rejectClaim()">
+            <mat-icon>cancel</mat-icon>
+            Rejeter
+          </button>
+        }
+        <button mat-button [routerLink]="['/claims']">
+          <mat-icon>arrow_back</mat-icon>
+          Retour à la liste
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+</div>

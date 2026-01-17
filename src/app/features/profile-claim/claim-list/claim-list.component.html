@@ -1,0 +1,109 @@
+<div class="claim-list-container">
+  <mat-card class="claim-list-card">
+    <mat-card-header>
+      <mat-card-title>Revendications de profil</mat-card-title>
+      <mat-card-subtitle>Gérer les demandes de revendication de profil</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="filters">
+        <button mat-button [class.active]="selectedStatus === undefined" (click)="loadClaims()">
+          Toutes
+        </button>
+        <button mat-button [class.active]="selectedStatus === ClaimStatus.PENDING" (click)="loadClaims(ClaimStatus.PENDING)">
+          En attente
+        </button>
+        <button mat-button [class.active]="selectedStatus === ClaimStatus.APPROVED" (click)="loadClaims(ClaimStatus.APPROVED)">
+          Approuvées
+        </button>
+        <button mat-button [class.active]="selectedStatus === ClaimStatus.REJECTED" (click)="loadClaims(ClaimStatus.REJECTED)">
+          Rejetées
+        </button>
+      </div>
+
+      @if (loading) {
+        <app-loading-spinner message="Chargement des revendications..."></app-loading-spinner>
+      }
+
+      @if (error) {
+        <app-error-message [message]="error"></app-error-message>
+      }
+
+      @if (!loading && claims.length === 0) {
+        <div class="no-claims">
+          <mat-icon>inbox</mat-icon>
+          <p>Aucune revendication trouvée</p>
+        </div>
+      }
+
+      @if (!loading && claims.length > 0) {
+        <table mat-table [dataSource]="claims" class="claims-table">
+          <ng-container matColumnDef="person">
+            <th mat-header-cell *matHeaderCellDef>Profil</th>
+            <td mat-cell *matCellDef="let claim">
+              <div class="person-info">
+                <strong>{{ claim.prenom }} {{ claim.nom }}</strong>
+                <span class="person-id">ID: {{ claim.personId }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="requester">
+            <th mat-header-cell *matHeaderCellDef>Demandeur</th>
+            <td mat-cell *matCellDef="let claim">
+              <div>
+                <div>{{ claim.email }}</div>
+                <div class="requester-name">{{ claim.prenom }} {{ claim.nom }}</div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Statut</th>
+            <td mat-cell *matCellDef="let claim">
+              <mat-chip-set>
+                <mat-chip [color]="getStatusColor(claim.status)">
+                  {{ getStatusLabel(claim.status) }}
+                </mat-chip>
+              </mat-chip-set>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef>Date de création</th>
+            <td mat-cell *matCellDef="let claim">
+              {{ claim.createdAt | date:'dd/MM/yyyy HH:mm' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let claim">
+              @if (claim.status === ClaimStatus.PENDING && store.isSuperAdmin()) {
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="approveClaim(claim)">
+                    <mat-icon>check_circle</mat-icon>
+                    <span>Approuver</span>
+                  </button>
+                  <button mat-menu-item (click)="rejectClaim(claim)">
+                    <mat-icon>cancel</mat-icon>
+                    <span>Rejeter</span>
+                  </button>
+                </mat-menu>
+              }
+              <button mat-icon-button [routerLink]="['/claims', claim.id]">
+                <mat-icon>visibility</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

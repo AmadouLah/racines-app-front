@@ -1,0 +1,60 @@
+.claim-list-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.claim-list-card {
+  margin-bottom: 2rem;
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.filters button.active {
+  background-color: #667eea;
+  color: white;
+}
+
+.claims-table {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.person-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.person-id {
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.requester-name {
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.7);
+  margin-top: 0.25rem;
+}
+
+.no-claims {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.no-claims mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1rem;
+  color: rgba(0, 0, 0, 0.4);
+}

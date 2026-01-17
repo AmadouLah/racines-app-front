@@ -1,0 +1,88 @@
+<div class="validation-detail-container">
+  @if (loading) {
+    <app-loading-spinner message="Chargement de la validation..."></app-loading-spinner>
+  }
+
+  @if (error) {
+    <app-error-message [message]="error"></app-error-message>
+  }
+
+  @if (pendingAddition && !loading) {
+    <mat-card class="validation-detail-card">
+      <mat-card-header>
+        <mat-card-title>Détails de la validation</mat-card-title>
+        <mat-card-subtitle>
+          <mat-chip-set>
+            <mat-chip [color]="getStatusColor(pendingAddition.status)">
+              {{ getStatusLabel(pendingAddition.status) }}
+            </mat-chip>
+          </mat-chip-set>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="validation-info">
+          <section class="person-section">
+            <h3>Personne concernée</h3>
+            <div class="info-row">
+              <span class="label">ID de la personne:</span>
+              <span>{{ pendingAddition.personId }}</span>
+            </div>
+            @if (person) {
+              <app-person-card [person]="person" [showActions]="false"></app-person-card>
+            }
+          </section>
+
+          <section class="status-section">
+            <h3>Statut</h3>
+            <div class="info-row">
+              <span class="label">Statut:</span>
+              <mat-chip-set>
+                <mat-chip [color]="getStatusColor(pendingAddition.status)">
+                  {{ getStatusLabel(pendingAddition.status) }}
+                </mat-chip>
+              </mat-chip-set>
+            </div>
+            @if (pendingAddition.processedAt) {
+              <div class="info-row">
+                <span class="label">Traité le:</span>
+                <span>{{ pendingAddition.processedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+              </div>
+            }
+            @if (pendingAddition.rejectionReason) {
+              <div class="info-row">
+                <span class="label">Raison du rejet:</span>
+                <span>{{ pendingAddition.rejectionReason }}</span>
+              </div>
+            }
+            <div class="info-row">
+              <span class="label">Demandé par:</span>
+              <span>{{ pendingAddition.requestedBy }}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Créé le:</span>
+              <span>{{ pendingAddition.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+          </section>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        @if (pendingAddition.status === ValidationStatus.PENDING && store.isSuperAdmin()) {
+          <button mat-raised-button color="primary" (click)="approveAddition()">
+            <mat-icon>check_circle</mat-icon>
+            Approuver
+          </button>
+          <button mat-raised-button (click)="rejectAddition()">
+            <mat-icon>cancel</mat-icon>
+            Rejeter
+          </button>
+        }
+        <button mat-button [routerLink]="['/validations']">
+          <mat-icon>arrow_back</mat-icon>
+          Retour à la liste
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+</div>

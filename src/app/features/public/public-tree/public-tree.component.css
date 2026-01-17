@@ -1,0 +1,158 @@
+.public-tree-container {
+  min-height: calc(100vh - 64px);
+  background: linear-gradient(to bottom, #f5f5f5 0%, #ffffff 100%);
+  padding: 2rem 1rem;
+}
+
+.loading-container,
+.empty-state-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 200px);
+  padding: 2rem;
+}
+
+.empty-state-content {
+  text-align: center;
+  max-width: 600px;
+  padding: 4rem 2rem;
+}
+
+.empty-icon-wrapper {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.empty-icon {
+  font-size: 120px;
+  width: 120px;
+  height: 120px;
+  color: rgba(102, 126, 234, 0.3);
+  animation: fadeInScale 0.8s ease-out;
+}
+
+.empty-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.5px;
+}
+
+.empty-description {
+  font-size: 1.1rem;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+  line-height: 1.6;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.tree-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tree-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem 0;
+}
+
+.tree-header h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.5px;
+}
+
+.tree-subtitle {
+  font-size: 1.1rem;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+}
+
+.tree-structure {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.generation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.generation-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #555;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.persons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.current-person {
+  padding: 2rem 0;
+  border-top: 2px solid #e0e0e0;
+  border-bottom: 2px solid #e0e0e0;
+  background: rgba(102, 126, 234, 0.05);
+  border-radius: 12px;
+}
+
+.current-person-card {
+  max-width: 400px;
+  width: 100%;
+}
+
+.claim-button {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.grandparents {
+  margin-top: 0;
+}
+
+.siblings {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .tree-header h1 {
+    font-size: 2rem;
+  }
+
+  .persons-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .generation {
+    gap: 1rem;
+  }
+}

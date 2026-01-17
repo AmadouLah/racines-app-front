@@ -1,0 +1,91 @@
+<div class="pending-additions-container">
+  <mat-card class="pending-additions-card">
+    <mat-card-header>
+      <mat-card-title>Validations en attente</mat-card-title>
+      <mat-card-subtitle>Gérer les demandes de validation d'ajout de personnes</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (loading) {
+        <app-loading-spinner message="Chargement des validations..."></app-loading-spinner>
+      }
+
+      @if (error) {
+        <app-error-message [message]="error"></app-error-message>
+      }
+
+      @if (!loading && pendingAdditions.length === 0) {
+        <div class="no-additions">
+          <mat-icon>inbox</mat-icon>
+          <p>Aucune validation en attente</p>
+        </div>
+      }
+
+      @if (!loading && pendingAdditions.length > 0) {
+        <table mat-table [dataSource]="pendingAdditions" class="additions-table">
+          <ng-container matColumnDef="person">
+            <th mat-header-cell *matHeaderCellDef>Personne</th>
+            <td mat-cell *matCellDef="let addition">
+              <div class="person-info">
+                <strong>{{ getPersonName(addition.personId) }}</strong>
+                <span class="person-id">ID: {{ addition.personId }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="requester">
+            <th mat-header-cell *matHeaderCellDef>Demandeur</th>
+            <td mat-cell *matCellDef="let addition">
+              <span>ID: {{ addition.requestedBy }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Statut</th>
+            <td mat-cell *matCellDef="let addition">
+              <mat-chip-set>
+                <mat-chip [color]="getStatusColor(addition.status)">
+                  {{ getStatusLabel(addition.status) }}
+                </mat-chip>
+              </mat-chip-set>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef>Date de création</th>
+            <td mat-cell *matCellDef="let addition">
+              {{ addition.createdAt | date:'dd/MM/yyyy HH:mm' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let addition">
+              @if (addition.status === ValidationStatus.PENDING && store.isSuperAdmin()) {
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="approveAddition(addition)">
+                    <mat-icon>check_circle</mat-icon>
+                    <span>Approuver</span>
+                  </button>
+                  <button mat-menu-item (click)="rejectAddition(addition)">
+                    <mat-icon>cancel</mat-icon>
+                    <span>Rejeter</span>
+                  </button>
+                </mat-menu>
+              }
+              <button mat-icon-button [routerLink]="['/validations', addition.id]">
+                <mat-icon>visibility</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

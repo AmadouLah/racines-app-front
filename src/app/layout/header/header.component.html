@@ -1,0 +1,47 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button routerLink="/" class="logo-button">
+    <img src="/img/Design1.png" alt="Racines Logo" class="logo-image">
+    <span class="logo-text">Racines</span>
+  </button>
+  
+  <span class="spacer"></span>
+
+  @if (store.isAuthenticated()) {
+    <nav class="nav-links">
+      <a mat-button routerLink="/dashboard" routerLinkActive="active">Tableau de bord</a>
+      @if (store.isSuperAdmin() || store.isValidatedUser()) {
+        <a mat-button routerLink="/dashboard/claims" routerLinkActive="active">Revendications</a>
+        <a mat-button routerLink="/dashboard/validations" routerLinkActive="active">Validations</a>
+      }
+      @if (store.isSuperAdmin()) {
+        <a mat-button routerLink="/dashboard/admin" routerLinkActive="active">Admin</a>
+      }
+    </nav>
+
+    <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-menu-button">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <div class="user-info">
+        <p class="user-name">{{ store.user()?.prenom }} {{ store.user()?.nom }}</p>
+        <p class="user-email">{{ store.user()?.email }}</p>
+        <p class="user-role">{{ store.user()?.role }}</p>
+      </div>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Déconnexion</span>
+      </button>
+    </mat-menu>
+  } @else {
+    <button mat-icon-button [matMenuTriggerFor]="guestMenu" class="menu-button">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #guestMenu="matMenu">
+      <button mat-menu-item routerLink="/login">
+        <mat-icon>login</mat-icon>
+        <span>Se connecter</span>
+      </button>
+    </mat-menu>
+  }
+</mat-toolbar>

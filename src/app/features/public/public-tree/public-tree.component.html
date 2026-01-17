@@ -1,0 +1,86 @@
+<div class="public-tree-container">
+  @if (loading) {
+    <div class="loading-container">
+      <app-loading-spinner message="Chargement de l'arbre généalogique..."></app-loading-spinner>
+    </div>
+  }
+
+
+  @if (familyTree && !loading) {
+    <div class="tree-content">
+      <div class="tree-header">
+        <h1>Arbre Généalogique Familial</h1>
+        <p class="tree-subtitle">Découvrez votre histoire familiale</p>
+      </div>
+
+      <div class="tree-structure">
+        <!-- Grands-parents -->
+        @if (familyTree.grandparents && familyTree.grandparents.length > 0) {
+          <div class="generation grandparents">
+            <h3 class="generation-title">Grands-parents</h3>
+            <div class="persons-grid">
+              @for (grandparent of familyTree.grandparents; track grandparent.id) {
+                <app-person-card [person]="grandparent" [showActions]="false"></app-person-card>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Parents -->
+        @if (familyTree.parents && familyTree.parents.length > 0) {
+          <div class="generation parents">
+            <h3 class="generation-title">Parents</h3>
+            <div class="persons-grid">
+              @for (parent of familyTree.parents; track parent.id) {
+                <app-person-card [person]="parent" [showActions]="false"></app-person-card>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Personne principale -->
+        <div class="generation current-person">
+          <div class="current-person-card">
+            <app-person-card [person]="familyTree.person" [showActions]="false"></app-person-card>
+          </div>
+          @if (store.isAuthenticated() && store.user()?.personId === familyTree.person.id) {
+            <button mat-raised-button color="primary" routerLink="/dashboard" class="claim-button">
+              <mat-icon>edit</mat-icon>
+              Modifier mon profil
+            </button>
+          } @else if (!store.isAuthenticated()) {
+            <button mat-raised-button color="primary" [routerLink]="['/claims/new', familyTree.person.id]" class="claim-button">
+              <mat-icon>person_add</mat-icon>
+              Revendiquer ce profil
+            </button>
+          }
+        </div>
+
+        <!-- Frères et sœurs -->
+        @if (familyTree.siblings && familyTree.siblings.length > 0) {
+          <div class="generation siblings">
+            <h3 class="generation-title">Frères et sœurs</h3>
+            <div class="persons-grid">
+              @for (sibling of familyTree.siblings; track sibling.id) {
+                <app-person-card [person]="sibling" [showActions]="false"></app-person-card>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  } @else if (!familyTree && !loading) {
+    <div class="empty-state-container">
+      <div class="empty-state-content">
+        <div class="empty-icon-wrapper">
+          <mat-icon class="empty-icon">account_tree</mat-icon>
+        </div>
+        <h2 class="empty-title">Bienvenue sur Racines</h2>
+        <p class="empty-description">
+          L'arbre généalogique familial n'est pas encore disponible.<br>
+          L'administrateur ajoutera bientôt les premiers membres de la famille.
+        </p>
+      </div>
+    </div>
+  }
+</div>

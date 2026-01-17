@@ -1,0 +1,67 @@
+<div class="family-tree-container">
+  @if (loading) {
+    <app-loading-spinner message="Chargement de l'arbre généalogique..."></app-loading-spinner>
+  }
+
+  @if (error) {
+    <app-error-message [message]="error"></app-error-message>
+  }
+
+  @if (familyTree && !loading) {
+    <mat-card class="family-tree-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>account_tree</mat-icon>
+          Arbre généalogique de {{ familyTree.person.prenom }} {{ familyTree.person.nom }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="tree-structure">
+          <!-- Grands-parents -->
+          @if (familyTree.grandparents.length > 0) {
+            <div class="generation grandparents">
+              <h3>Grands-parents</h3>
+              <div class="persons-grid">
+                @for (grandparent of familyTree.grandparents; track grandparent.id) {
+                  <app-person-card [person]="grandparent" [showActions]="true"></app-person-card>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Parents -->
+          @if (familyTree.parents.length > 0) {
+            <div class="generation parents">
+              <h3>Parents</h3>
+              <div class="persons-grid">
+                @for (parent of familyTree.parents; track parent.id) {
+                  <app-person-card [person]="parent" [showActions]="true"></app-person-card>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Personne principale -->
+          <div class="generation current-person">
+            <h3>Personne principale</h3>
+            <div class="current-person-card">
+              <app-person-card [person]="familyTree.person" [showActions]="true"></app-person-card>
+            </div>
+          </div>
+
+          <!-- Frères et sœurs -->
+          @if (familyTree.siblings.length > 0) {
+            <div class="generation siblings">
+              <h3>Frères et sœurs</h3>
+              <div class="persons-grid">
+                @for (sibling of familyTree.siblings; track sibling.id) {
+                  <app-person-card [person]="sibling" [showActions]="true"></app-person-card>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>
