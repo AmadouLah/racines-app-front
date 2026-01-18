@@ -31,8 +31,9 @@
 }
 
 .user-menu-button,
-.menu-button {
+.guest-menu-button {
   margin-left: 1rem;
+  color: white;
 }
 
 .user-info {

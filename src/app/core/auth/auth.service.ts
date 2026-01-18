@@ -49,19 +49,20 @@ export class AuthService {
   }
 
   logout(): void {
+    this.apiService.post(API_ENDPOINTS.AUTH.LOGOUT).subscribe();
     this.store.clearUser();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
 
   handleAuthSuccess(response: any): void {
-    if (response.success && response.data) {
+    if (response?.success && response.data) {
       const user = this.mapToUser(response.data);
       this.store.setUser(user);
       
       if (user.role === 'SUPER_ADMIN' || user.role === 'VALIDATED_USER') {
-        this.router.navigate(['/']);
+        this.router.navigate(['/dashboard']);
       } else {
-        this.router.navigate(['/pending']);
+        this.router.navigate(['/']);
       }
     }
   }

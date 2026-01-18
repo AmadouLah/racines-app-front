@@ -4,36 +4,232 @@
       <img src="/img/Design1.png" alt="Racines Logo" class="logo-image" />
       <h1 class="app-title">Racines</h1>
       <p class="app-subtitle">Arbre Généalogique Familial</p>
-      <p class="welcome-text">
-        Connectez-vous avec votre compte Google pour accéder à votre arbre
-        généalogique
-      </p>
-      <button
-        mat-raised-button
-        color="primary"
-        class="google-login-button"
-        (click)="login()"
-      >
-        <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
-          <path
-            fill="#4285F4"
-            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-          />
-          <path
-            fill="#34A853"
-            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-          />
-          <path
-            fill="#FBBC05"
-            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-          />
-          <path
-            fill="#EA4335"
-            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-          />
-        </svg>
-        <span>Continuer avec Google</span>
-      </button>
+
+      @if (step === 'email') {
+      <div class="login-form-section">
+        <p class="welcome-text">
+          Connectez-vous pour accéder à votre arbre généalogique
+        </p>
+
+        <form
+          [formGroup]="emailForm"
+          (ngSubmit)="onEmailSubmit()"
+          class="login-form"
+        >
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Adresse email</mat-label>
+            <input
+              matInput
+              type="email"
+              formControlName="email"
+              placeholder="votre@email.com"
+            />
+            <mat-icon matPrefix>email</mat-icon>
+            @if (emailForm.get('email')?.hasError('required') &&
+            emailForm.get('email')?.touched) {
+            <mat-error>L'email est obligatoire</mat-error>
+            } @if (emailForm.get('email')?.hasError('email') &&
+            emailForm.get('email')?.touched) {
+            <mat-error>Email invalide</mat-error>
+            }
+          </mat-form-field>
+
+          @if (error) {
+          <app-error-message [message]="error"></app-error-message>
+          }
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="submit-button"
+            [disabled]="emailForm.invalid || loading"
+          >
+            @if (loading) {
+            <ng-container>
+              <mat-icon class="spinning">hourglass_empty</mat-icon>
+              <span>Connexion...</span>
+            </ng-container>
+            } @else {
+            <ng-container>
+              <mat-icon>arrow_forward</mat-icon>
+              <span>Continuer</span>
+            </ng-container>
+            }
+          </button>
+        </form>
+
+        <mat-divider class="divider">OU</mat-divider>
+
+        <button
+          mat-stroked-button
+          class="google-login-button"
+          (click)="onGoogleLogin()"
+          [disabled]="loading"
+        >
+          <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
+            <path
+              fill="#4285F4"
+              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+            />
+            <path
+              fill="#34A853"
+              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+            />
+            <path
+              fill="#FBBC05"
+              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+            />
+            <path
+              fill="#EA4335"
+              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+            />
+          </svg>
+          <span>Continuer avec Google</span>
+        </button>
+      </div>
+      } @if (step === 'otp') {
+      <div class="login-form-section">
+        <p class="welcome-text">
+          Un code OTP a été envoyé à <strong>{{ userEmail }}</strong>
+        </p>
+
+        <form
+          [formGroup]="otpForm"
+          (ngSubmit)="onOTPSubmit()"
+          class="login-form"
+        >
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Code OTP (6 chiffres)</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="otpCode"
+              placeholder="123456"
+              maxlength="6"
+              (keypress)="onOtpKeyPress($event)"
+              pattern="[0-9]*"
+              inputmode="numeric"
+            />
+            <mat-icon matPrefix>vpn_key</mat-icon>
+            @if (otpForm.get('otpCode')?.hasError('required') &&
+            otpForm.get('otpCode')?.touched) {
+            <mat-error>Le code OTP est obligatoire</mat-error>
+            } @if (otpForm.get('otpCode')?.hasError('pattern') &&
+            otpForm.get('otpCode')?.touched) {
+            <mat-error>Le code doit contenir 6 chiffres</mat-error>
+            }
+          </mat-form-field>
+
+          @if (error) {
+          <app-error-message [message]="error"></app-error-message>
+          }
+
+          <div class="form-actions">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              class="submit-button"
+              [disabled]="otpForm.invalid || loading"
+            >
+              @if (loading) {
+              <ng-container>
+                <mat-icon class="spinning">hourglass_empty</mat-icon>
+                <span>Vérification...</span>
+              </ng-container>
+              } @else {
+              <ng-container>
+                <mat-icon>check_circle</mat-icon>
+                <span>Vérifier</span>
+              </ng-container>
+              }
+            </button>
+            <button
+              mat-button
+              type="button"
+              (click)="backToEmail()"
+              class="back-button"
+            >
+              <mat-icon>arrow_back</mat-icon>
+              <span>Retour</span>
+            </button>
+          </div>
+        </form>
+      </div>
+      } @if (step === 'password') {
+      <div class="login-form-section">
+        <p class="welcome-text">
+          Connectez-vous avec votre mot de passe administrateur
+        </p>
+
+        <form
+          [formGroup]="passwordForm"
+          (ngSubmit)="onPasswordSubmit()"
+          class="login-form"
+        >
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Mot de passe</mat-label>
+            <input
+              matInput
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="password"
+              placeholder="Votre mot de passe"
+            />
+            <mat-icon matPrefix>lock</mat-icon>
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hidePassword = !hidePassword"
+              type="button"
+            >
+              <mat-icon>{{
+                hidePassword ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
+            @if (passwordForm.get('password')?.hasError('required') &&
+            passwordForm.get('password')?.touched) {
+            <mat-error>Le mot de passe est obligatoire</mat-error>
+            }
+          </mat-form-field>
+
+          @if (error) {
+          <app-error-message [message]="error"></app-error-message>
+          }
+
+          <div class="form-actions">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              class="submit-button"
+              [disabled]="passwordForm.invalid || loading"
+            >
+              @if (loading) {
+              <ng-container>
+                <mat-icon class="spinning">hourglass_empty</mat-icon>
+                <span>Connexion...</span>
+              </ng-container>
+              } @else {
+              <ng-container>
+                <mat-icon>login</mat-icon>
+                <span>Se connecter</span>
+              </ng-container>
+              }
+            </button>
+            <button
+              mat-button
+              type="button"
+              (click)="backToEmail()"
+              class="back-button"
+            >
+              <mat-icon>arrow_back</mat-icon>
+              <span>Retour</span>
+            </button>
+          </div>
+        </form>
+      </div>
+      }
     </div>
   </mat-card>
 </div>

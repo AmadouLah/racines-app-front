@@ -17,7 +17,12 @@ export const API_ENDPOINTS = {
   AUTH: {
     SUCCESS: '/auth/success',
     ME: '/auth/me',
-    FAILURE: '/auth/failure'
+    FAILURE: '/auth/failure',
+    LOGIN_INITIATE: '/auth/login/initiate',
+    LOGIN_VERIFY_OTP: '/auth/login/verify-otp',
+    LOGIN_VERIFY_PASSWORD: '/auth/login/verify-password',
+    ADMIN_REQUEST_OTP: '/auth/admin/request-otp',
+    LOGOUT: '/auth/logout'
   },
   PERSONS: {
     BASE: '/persons',

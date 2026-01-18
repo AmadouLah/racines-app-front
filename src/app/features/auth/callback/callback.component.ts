@@ -37,11 +37,15 @@ export class CallbackComponent implements OnInit {
       })
     ).subscribe(response => {
       this.loading = false;
-      if (response?.success) {
+      if (response?.success && response.data) {
         this.authService.handleAuthSuccess(response);
       } else {
-        this.error = response?.error || 'Erreur lors de l\'authentification';
+        const errorMessage = response?.error || 'Erreur lors de l\'authentification';
+        this.error = errorMessage;
         this.authService.handleAuthFailure();
+        setTimeout(() => {
+          this.router.navigate(['/login'], { queryParams: { error: errorMessage } });
+        }, 2000);
       }
     });
   }
